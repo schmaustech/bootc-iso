@@ -175,6 +175,22 @@ Before we begin building let's review where we are and what is in the directory 
 config.toml  output
 ~~~
 
+Before we begin the build process we need to workaround an issue [here](https://issues.redhat.com/browse/RHEL-34807) by removing the signatures in our local copy of the RHEL Bootc image.
+
+~~~bash
+# skopeo copy --remove-signatures containers-storage:registry.redhat.io/rhel9/rhel-bootc:latest containers-storage:registry.redhat.io/rhel9/rhel-bootc:latest
+INFO[0000] Not using native diff for overlay, this may cause degraded performance for building images: kernel has CONFIG_OVERLAY_FS_REDIRECT_DIR enabled 
+Copying blob f2d952b04649 skipped: already exists  
+Copying blob bc1abff2c8d4 skipped: already exists  
+Copying blob 491341ca1509 skipped: already exists  
+(...)
+Copying blob 6c118cde0f5c skipped: already exists  
+Copying blob 5f70bf18a086 skipped: already exists  
+Copying blob 12787d84fa13 skipped: already exists  
+Copying config 482f4c67cc done   | 
+Writing manifest to image destination
+~~~
+
 If everything looks good we can proceed to run the build process which consists of using `podman` to run the `bootc-image-builder` while passing in some directories and referencing the starting image we will use to build our ISO.  The entire build process happens within a container and the ISO generated is dumped to the `output` directory we have mapped into the container.   The process will take a bit to run and the log output is very long.  I have provided the complete log run [here](https://github.com/schmaustech/bootc-iso/blob/main/bootc-iso-build-log) with the condensed version below.
 
 ~~~bash
