@@ -8,8 +8,12 @@ Image mode is a new approach to operating system (OS) deployment that lets users
 
 ## Workflow
 
+The following is the step by step process I took to create a Bootc image mode ISO.  The following steps were carried out on a RHEL9.4 host as root though sudo and a regular user could also be used.
+
+The first requirement was getting the container tools installed and so I used the following to get those installed.
+
 ~~~bash
-# yum install container-tools
+# dnf install container-tools
 Updating Subscription Management repositories.
 Last metadata expiration check: 2:20:17 ago on Fri 26 Jul 2024 07:17:27 AM CDT.
 Dependencies resolved.
@@ -68,38 +72,7 @@ Running transaction
   Upgrading        : netavark-2:1.10.3-1.el9.x86_64                                                                                                                                                                                      2/18 
   Upgrading        : podman-4:4.9.4-6.el9_4.x86_64                                                                                                                                                                                       3/18 
   Installing       : skopeo-2:1.14.3-0.1.el9.x86_64                                                                                                                                                                                      4/18 
-  Installing       : toolbox-0.0.99.5-2.el9.x86_64                                                                                                                                                                                       5/18 
-  Installing       : cockpit-podman-84.1-1.el9.noarch                                                                                                                                                                                    6/18 
-  Installing       : podman-docker-4:4.9.4-6.el9_4.noarch                                                                                                                                                                                7/18 
-  Upgrading        : buildah-2:1.33.7-3.el9_4.x86_64                                                                                                                                                                                     8/18 
-  Installing       : podman-remote-4:4.9.4-6.el9_4.x86_64                                                                                                                                                                                9/18 
-  Installing       : udica-0.2.8-1.el9.noarch                                                                                                                                                                                           10/18 
-  Installing       : python3-tomli-2.0.1-5.el9.noarch                                                                                                                                                                                   11/18 
-  Installing       : python3-pyxdg-0.27-3.el9.noarch                                                                                                                                                                                    12/18 
-  Installing       : python3-podman-3:4.9.0-1.el9.noarch                                                                                                                                                                                13/18 
-  Installing       : container-tools-1-14.el9.noarch                                                                                                                                                                                    14/18 
-  Running scriptlet: podman-2:4.6.1-8.el9_3.x86_64                                                                                                                                                                                      15/18 
-  Cleanup          : podman-2:4.6.1-8.el9_3.x86_64                                                                                                                                                                                      15/18 
-  Cleanup          : buildah-1:1.31.4-1.el9_3.x86_64                                                                                                                                                                                    16/18 
-  Cleanup          : netavark-2:1.7.0-2.el9_3.x86_64                                                                                                                                                                                    17/18 
-  Cleanup          : aardvark-dns-2:1.7.0-1.el9.x86_64                                                                                                                                                                                  18/18 
-  Running scriptlet: aardvark-dns-2:1.7.0-1.el9.x86_64                                                                                                                                                                                  18/18 
-  Verifying        : python3-pyxdg-0.27-3.el9.noarch                                                                                                                                                                                     1/18 
-  Verifying        : python3-tomli-2.0.1-5.el9.noarch                                                                                                                                                                                    2/18 
-  Verifying        : container-tools-1-14.el9.noarch                                                                                                                                                                                     3/18 
-  Verifying        : cockpit-podman-84.1-1.el9.noarch                                                                                                                                                                                    4/18 
-  Verifying        : skopeo-2:1.14.3-0.1.el9.x86_64                                                                                                                                                                                      5/18 
-  Verifying        : toolbox-0.0.99.5-2.el9.x86_64                                                                                                                                                                                       6/18 
-  Verifying        : udica-0.2.8-1.el9.noarch                                                                                                                                                                                            7/18 
-  Verifying        : python3-podman-3:4.9.0-1.el9.noarch                                                                                                                                                                                 8/18 
-  Verifying        : podman-docker-4:4.9.4-6.el9_4.noarch                                                                                                                                                                                9/18 
-  Verifying        : podman-remote-4:4.9.4-6.el9_4.x86_64                                                                                                                                                                               10/18 
-  Verifying        : netavark-2:1.10.3-1.el9.x86_64                                                                                                                                                                                     11/18 
-  Verifying        : netavark-2:1.7.0-2.el9_3.x86_64                                                                                                                                                                                    12/18 
-  Verifying        : aardvark-dns-2:1.10.0-3.el9_4.x86_64                                                                                                                                                                               13/18 
-  Verifying        : aardvark-dns-2:1.7.0-1.el9.x86_64                                                                                                                                                                                  14/18 
-  Verifying        : buildah-2:1.33.7-3.el9_4.x86_64                                                                                                                                                                                    15/18 
-  Verifying        : buildah-1:1.31.4-1.el9_3.x86_64                                                                                                                                                                                    16/18 
+  (...)
   Verifying        : podman-4:4.9.4-6.el9_4.x86_64                                                                                                                                                                                      17/18 
   Verifying        : podman-2:4.6.1-8.el9_3.x86_64                                                                                                                                                                                      18/18 
 Installed products updated.
@@ -113,12 +86,21 @@ Installed:
 Complete!
 ~~~
 
+Once the tooling is in place we need to login to `register.redhat.io` with a Red Hat account.
+
 ~~~bash
 # podman login registry.redhat.io
 Username: myusername
 Password: 
 Login Succeeded!
 ~~~
+
+Next we need to pull two images for this workflow locally:
+
+ * The latest Red Hat Bootc Image Builder image
+ * The latest Red Hat Bootc image
+
+First let's pull the image builder image.
 
 ~~~bash
 # sudo podman pull registry.redhat.io/rhel9/bootc-image-builder
@@ -133,6 +115,8 @@ Writing manifest to image destination
 Storing signatures
 7e467a06cbc49d0e601ab5acad54afcf16c7fd3187296c74f2780ec3e758977a
 ~~~
+
+Then we can pull the RHEL Bootc image.  Note if there is a need to build a custom Bootc image that can also be done as well and is documented [here](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/using_image_mode_for_rhel_to_build_deploy_and_manage_operating_systems/building-and-testing-the-rhel-bootable-container-images_using-image-mode-for-rhel-to-build-deploy-and-manage-operating-systems#building-and-testing-the-rhel-bootable-container-images_using-image-mode-for-rhel-to-build-deploy-and-manage-operating-systems)
 
 ~~~bash
 # podman pull registry.redhat.io/rhel9/rhel-bootc:latest
@@ -153,6 +137,8 @@ Storing signatures
 482f4c67cc158fa4b8db27c09832d3133bc45b1d989aa6d166ca2ef45f6c7178
 ~~~
 
+Once we have pulled our images let's just review what we have.
+
 ~~~bash
 # podman images
 REPOSITORY                                    TAG         IMAGE ID      CREATED     SIZE
@@ -160,11 +146,36 @@ registry.redhat.io/rhel9/rhel-bootc           latest      482f4c67cc15  4 days a
 registry.redhat.io/rhel9/bootc-image-builder  latest      7e467a06cbc4  4 days ago  521 MB
 ~~~
 
+Next I created a directory structure under `root` home directory.
+
 ~~~bash
-mkdir ~/bootc
-cd bootc
-mkdir output
+# mkdir ~/bootc
+# cd bootc
+# mkdir output
 ~~~
+
+I also created a config.toml file which allows us to customize the image.  In this example I embedding my user/password, public ssh-key and the groups I should belong to.
+
+~~~bash
+# cat <<EOL > config.toml 
+[[blueprint.customizations.user]]
+name = "myuser"
+password = "password"
+key = "ssh-rsa publick-key"
+groups = ["wheel"]
+EOL
+~~~
+
+Before we begin building let's review where we are and what is in the directory structure.
+
+~~~bash
+# pwd
+/root/bootc
+# ls
+config.toml  output
+~~~
+
+If everything looks good we can proceed to run the build process which consists of using `podman` to run the `bootc-image-builder` while passing in some directories and referencing the starting image we will use to build our ISO.  The entire build process happens within a container and the ISO generated is dumped to the `output` directory we have mapped into the container.   The process will take a bit to run and the log output is very long.  I have provided the complete log run [here](https://github.com/schmaustech/bootc-iso/blob/main/bootc-iso-build-log) with the condensed version below.
 
 ~~~bash
 # podman run --rm -it --privileged --security-opt label=type:unconfined_t -v /var/lib/containers/storage:/var/lib/containers/storage -v /root/bootc/output:/output -v /root/bootc/config.toml:/config.toml registry.redhat.io/rhel9/bootc-image-builder --type iso --config /config.toml --local registry.redhat.io/rhel9/rhel-bootc:latest
@@ -179,7 +190,6 @@ Build
   root: <host>
 (...)
 Writing to 'stdio:/run/osbuild/tree/install.iso' completed successfully.
-
 
 ⏱  Duration: 3s
 org.osbuild.implantisomd5: bf37713d1bdb752cb80271b8243583e86665b003c69abff0e1730de24398fac1 {
@@ -204,4 +214,13 @@ bootiso:  	bf37713d1bdb752cb80271b8243583e86665b003c69abff0e1730de24398fac1
 Build complete!
 Results saved in
 .
+~~~
+
+Once the build process completes we will find an `install.iso` in the `output/bootiso/` directory.
+
+~~~bash
+# cd ~/bootc/output/bootiso/
+# ls -l
+total 2211840
+-rw-r--r--. 1 root root 2264924160 Jul 26 10:38 install.iso
 ~~~
