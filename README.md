@@ -224,3 +224,5 @@ Once the build process completes we will find an `install.iso` in the `output/bo
 total 2211840
 -rw-r--r--. 1 root root 2264924160 Jul 26 10:38 install.iso
 ~~~
+
+The installation iso that was created can then be used to install RHEL on another host automatically.
