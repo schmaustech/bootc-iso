@@ -1,11 +1,3 @@
-# podman run --rm -it --privileged --security-opt label=type:unconfined_t -v /var/lib/containers/storage:/var/lib/containers/storage -v /root/bootc/output:/output -v /root/bootc/config.toml:/config.toml registry.redhat.io/rhel9/bootc-image-builder --type iso --config config.toml --local registry.redhat.io/rhel9/rhel-bootc:latest
-Generating manifest manifest-iso.json
-Error: cannot build manifest: cannot read config: open config.toml: no such file or directory
-2024/07/26 15:31:08 error: cannot build manifest: cannot read config: open config.toml: no such file or directory
-[root@cube bootc]# ls
-config.toml  output
-[root@cube bootc]# pwd
-/root/bootc
 [root@cube bootc]# podman run --rm -it --privileged --security-opt label=type:unconfined_t -v /var/lib/containers/storage:/var/lib/containers/storage -v /root/bootc/output:/output -v /root/bootc/config.toml:/config.toml registry.redhat.io/rhel9/bootc-image-builder --type iso --config /config.toml --local registry.redhat.io/rhel9/rhel-bootc:latest
 Generating manifest manifest-iso.json
 DONE
