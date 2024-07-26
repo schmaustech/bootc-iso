@@ -152,3 +152,56 @@ Writing manifest to image destination
 Storing signatures
 482f4c67cc158fa4b8db27c09832d3133bc45b1d989aa6d166ca2ef45f6c7178
 ~~~
+
+~~~bash
+# podman images
+REPOSITORY                                    TAG         IMAGE ID      CREATED     SIZE
+registry.redhat.io/rhel9/rhel-bootc           latest      482f4c67cc15  4 days ago  1.47 GB
+registry.redhat.io/rhel9/bootc-image-builder  latest      7e467a06cbc4  4 days ago  521 MB
+~~~
+
+~~~bash
+mkdir ~/bootc
+cd bootc
+mkdir output
+~~~
+
+~~~bash
+# podman run --rm -it --privileged --security-opt label=type:unconfined_t -v /var/lib/containers/storage:/var/lib/containers/storage -v /root/bootc/output:/output -v /root/bootc/config.toml:/config.toml registry.redhat.io/rhel9/bootc-image-builder --type iso --config /config.toml --local registry.redhat.io/rhel9/rhel-bootc:latest
+Generating manifest manifest-iso.json
+DONE
+Building manifest-iso.json
+starting -Pipeline source org.osbuild.containers-storage: 51102953cf5005007cf8b3bd76c39a0ae558aa34f311915042cdc0bc4c1fb246
+Build
+  root: <host>
+Pipeline source org.osbuild.curl: 07337b98b3c859adfb37b011d83cf0511884147bf999e7869ffbf9074b529a4f
+Build
+  root: <host>
+(...)
+Writing to 'stdio:/run/osbuild/tree/install.iso' completed successfully.
+
+
+⏱  Duration: 3s
+org.osbuild.implantisomd5: bf37713d1bdb752cb80271b8243583e86665b003c69abff0e1730de24398fac1 {
+  "filename": "install.iso"
+}
+['implantisomd5', '/run/osbuild/tree/install.iso']
+Inserting md5sum into iso image...
+md5 = 11cf490ec817e7904ba35961d5323195
+Inserting fragment md5sums into iso image...
+fragmd5 = 4f7338c869faf1a2881d46dc4ac1eebf46148d4bf2fa1d59149d74f43195
+frags = 20
+Setting supported flag to 0
+
+⏱  Duration: 3s
+manifest - finished successfully
+build:    	9133fb8610ab053dae7e281e6a6655dbb912c4530d32e4da75c06b8713a87c80
+anaconda-tree:	fcd61d1236a42900977530f12f45fe452f2f0c8bf3c80a7ba60cb45ffe4bf36d
+rootfs-image:	0a517e05ab42f947beec8dae4d2da338ca9cc7fe17b1daba013e24b1c60aeadf
+efiboot-tree:	61a20c820b40436ce7bd6d1a74c6b97a05f7c8800b678083942e814cf9f7cc0e
+bootiso-tree:	53d4713e1d036ca2d06ae3b0b64c8b9a4efb63cbc6fed4f13afe1e984b7af04d
+bootiso:  	bf37713d1bdb752cb80271b8243583e86665b003c69abff0e1730de24398fac1
+Build complete!
+Results saved in
+.
+~~~
