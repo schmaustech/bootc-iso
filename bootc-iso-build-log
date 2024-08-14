@@ -8824,7 +8824,7 @@ org.osbuild.kickstart: a72c78bbe946232cf439428224523136ad21ac079f3bbb43a3473e4b9
       "groups": [
         "wheel"
       ],
-      "password": "$6$Ntq/F2oj4PVHaRv.$QpTUyuR7AySLXG5OuMzlbW5p5lf4BUxrOh1qHv54fU.kNE8AbyLH7dyFiPuVvI5UFH/5c3LVPZ3l6Cq92AlTs.",
+      "password": "$6$Ntq/F2oj4PVHaRv.$QpTUyuR7AySLXG5OuMzlbW5p5lf4BUxrOh1qHv54fU.kNE8AbyLH7dyFiPuVvI5UFH/5c3LVPZ3l6Cq92AlTs.", # notsecret - literally encryption of the word password here 
       "key": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDLyJ/8cjO+ynCL4gYPTT9GxONnkzx8yUJiljuxp3X/OQFH28jM0RqkHsCCEZvTUSzzZIwIVWzY6b3MDnkakHhgDqhGy1tKvRh5nqlyYU0bHPAYd8QjIZ+ee7X9JDXbhc1e8TXcP+fbLO1XXzJC5NPOK5A6LetxhfCgjO+yiQhZ5jTjIFzuH8ETASdahKcRpXDZ4R0GsBSijE4T4bQ5ZLcjPjbl3flyP7vge0qy4SxvOQILjPxWy6F0Yg9DVyEj9uo3xEGfoiR7OTtMql7WOku0bl692hveumbRdQfCqJuV17Hg0+Q9Dm9fp/+UhfENh06cqhGmm2pvpwDkaCSboSZcwbrup86VK/LIe6ye8ExTOqcp9SyeV2MaFeBko/dSemXbbfswR5yZP47oMgUeE12KbNryhJqJ7Qo9owxGwLD8ltF2xdyNiOFTnYx2yEr5cc8oyZ0b05Q7eAQEYCaIhAv0c0a3SVSuqwyE5hXrVkxy9pifc3g1MjpJt4qL0Lo08Vc= bschmaus@bschmaus-thinkpadp1gen3.rmtusmn.csb"
     }
   },
@@ -8849,7 +8849,7 @@ org.osbuild.kickstart: a72c78bbe946232cf439428224523136ad21ac079f3bbb43a3473e4b9
 created kickstarted at: osbuild-base.ks
 
 ostreecontainer --url=/run/install/repo/container --transport=oci --no-signature-verification
-user --name bschmaus --password $6$Ntq/F2oj4PVHaRv.$QpTUyuR7AySLXG5OuMzlbW5p5lf4BUxrOh1qHv54fU.kNE8AbyLH7dyFiPuVvI5UFH/5c3LVPZ3l6Cq92AlTs. --iscrypted --groups wheel
+user --name bschmaus --password $6$Ntq/F2oj4PVHaRv.$QpTUyuR7AySLXG5OuMzlbW5p5lf4BUxrOh1qHv54fU.kNE8AbyLH7dyFiPuVvI5UFH/5c3LVPZ3l6Cq92AlTs. --iscrypted --groups wheel # notsecret - literally encryption of the word password here 
 sshkey --username bschmaus "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDLyJ/8cjO+ynCL4gYPTT9GxONnkzx8yUJiljuxp3X/OQFH28jM0RqkHsCCEZvTUSzzZIwIVWzY6b3MDnkakHhgDqhGy1tKvRh5nqlyYU0bHPAYd8QjIZ+ee7X9JDXbhc1e8TXcP+fbLO1XXzJC5NPOK5A6LetxhfCgjO+yiQhZ5jTjIFzuH8ETASdahKcRpXDZ4R0GsBSijE4T4bQ5ZLcjPjbl3flyP7vge0qy4SxvOQILjPxWy6F0Yg9DVyEj9uo3xEGfoiR7OTtMql7WOku0bl692hveumbRdQfCqJuV17Hg0+Q9Dm9fp/+UhfENh06cqhGmm2pvpwDkaCSboSZcwbrup86VK/LIe6ye8ExTOqcp9SyeV2MaFeBko/dSemXbbfswR5yZP47oMgUeE12KbNryhJqJ7Qo9owxGwLD8ltF2xdyNiOFTnYx2yEr5cc8oyZ0b05Q7eAQEYCaIhAv0c0a3SVSuqwyE5hXrVkxy9pifc3g1MjpJt4qL0Lo08Vc= bschmaus@bschmaus-thinkpadp1gen3.rmtusmn.csb"
 rootpw --lock
 lang en_US.UTF-8
